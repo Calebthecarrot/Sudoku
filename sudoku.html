@@ -196,6 +196,8 @@ var gBoard = new Array(81);
 for (let i = 0; i < gBoard.length; i++) {
   gBoard[i] = 0;
 }
+var gResult = new Array(81);
+
 
 //tell if current board is finished or not
 gIsFinished = 0;
@@ -1021,6 +1023,29 @@ function solveAll()
   }
 }
 
+
+
+//get the result and store it in an array and we will use this array to judge user's input
+function getResult()
+{
+  log("calling getResult")
+  solveAll();
+  //now copy gBoaard into array input
+  for (let i = 0; i < 81; i++) {
+    let id = "cell-" + i;
+    gResult[i] = $(id).value;
+  }
+   //now copy gBoaard into array input
+   for (let i = 0; i < 81; i++) {
+    log("gResult[" + i + "]=" + gResult[i]);
+   }
+
+  //now restart board so it goes back to the originl status
+  restart();
+}
+
+
+
 function convert1DArrayTo2D(board1D)
 {
   var board2D = new Array(9);
@@ -1206,7 +1231,7 @@ function restart()
         <script>
         // Update the time every 1 second
         var myTimer = setInterval(function() {
-          if(gIsFinished) return;
+           if(gIsFinished) return;
           // Get today's date and time
           var now = new Date().getTime();
 
@@ -1235,6 +1260,7 @@ function restart()
       <input type="text" id="debuglevel">
       <button class="button button_w100" onclick="debugRenderBoard(0)">Debug</button>
       <button class="button button_w100" onclick="debugRenderBoard(0)">Invert</button>
+      <button class="button button_w80" onclick="getResult()">Debug_getresult</button>
       <p></p>
     </div>
     <div class="container">
