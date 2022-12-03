@@ -498,7 +498,8 @@ function onlyNumberKey() {
   if( !regex.test(key) ) {
     theEvent.returnValue = false;
     if(theEvent.preventDefault) theEvent.preventDefault();
-  }
+    }
+    else {checkUserInput(cellid);}
 }
 
 function buildTable()
@@ -1043,7 +1044,13 @@ function getResult()
   //now restart board so it goes back to the originl status
   restart();
 }
-
+function checkUserInput(cellid) 
+{
+  let i = Number(cellid.substr(5));
+if ($(cellid).value != gResult[i]) {
+  log("wrong answer");
+}
+}
 
 
 function convert1DArrayTo2D(board1D)
