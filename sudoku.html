@@ -197,6 +197,10 @@ for (let i = 0; i < gBoard.length; i++) {
   gBoard[i] = 0;
 }
 var gResult = new Array(81);
+var cellid = new Array(81);
+for (let i = 0; i < gBoard.length; i++) {
+  gBoard[i] = 0;
+}
 
 
 //tell if current board is finished or not
@@ -491,15 +495,18 @@ function onlyNumberKey() {
       key = event.clipboardData.getData('text/plain');
   } else {
   // Handle key press
-      var key = theEvent.keyCode || theEvent.which;
+   
+  var key = theEvent.keyCode || theEvent.which;
       key = String.fromCharCode(key);
   }
   var regex = /[0-9]|\./;
   if( !regex.test(key) ) {
     theEvent.returnValue = false;
     if(theEvent.preventDefault) theEvent.preventDefault();
-    }
-    else {checkUserInput(cellid);}
+  } else {
+    checkUserInput(key);
+  }
+  
 }
 
 function buildTable()
@@ -1036,7 +1043,7 @@ function getResult()
     let id = "cell-" + i;
     gResult[i] = $(id).value;
   }
-   //now copy gBoaard into array input
+   //print out the content of gResult
    for (let i = 0; i < 81; i++) {
     log("gResult[" + i + "]=" + gResult[i]);
    }
@@ -1044,12 +1051,20 @@ function getResult()
   //now restart board so it goes back to the originl status
   restart();
 }
-function checkUserInput(cellid) 
+
+function checkUserInput(key) 
 {
+  const activeCell = document.activeElement;
+  var cellid = activeCell.id;
+  log("cellid = "+ cellid);
+   
   let i = Number(cellid.substr(5));
-if ($(cellid).value != gResult[i]) {
-  log("wrong answer");
-}
+
+  if (i<0 || i>80) return;
+    log("Debug: result="+gResult[i]+"  value="+$(cellid).value + " key = "+key); 
+  if (key != gResult[i]) {
+    log("wrong answer!");
+  }
 }
 
 
@@ -1236,7 +1251,7 @@ function restart()
         <p></p>
 
         <script>
-        // Update the time every 1 second
+        // Update the time every 1 secosnd
         var myTimer = setInterval(function() {
            if(gIsFinished) return;
           // Get today's date and time
